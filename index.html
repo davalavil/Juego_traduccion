@@ -10,27 +10,32 @@
 <body>
     <h1>Juego de Traducción</h1>
 
-    <!-- ****** NUEVA SECCIÓN DE CONFIGURACIÓN ****** -->
+    <!-- ****** SECCIÓN DE CONFIGURACIÓN MEJORADA ****** -->
     <div class="configuracion-container">
+        <!-- Sección Unidades -->
         <div class="configuracion-seccion">
             <label><strong>Unidades a incluir:</strong></label>
-            <div class="unidad-checkboxes-container">
-                <div class="unidad-checkbox">
-                     <input type="checkbox" id="check-todas" value="all" checked>
-                     <label for="check-todas">Todas las Unidades</label>
-                </div>
-                 <!-- Checkboxes de unidades específicas se generarán aquí por JS -->
-                <div id="unidad-checkboxes-especificas"></div>
+            <div class="unidades-botones-control">
+                <button id="btn-select-all" class="btn-control-unidad">Seleccionar Todas</button>
+                <button id="btn-deselect-all" class="btn-control-unidad">Deseleccionar Todas</button>
+            </div>
+            <div id="unidades-botones-container" class="botones-container">
+                <!-- Los botones de unidad se generarán aquí por JS -->
             </div>
         </div>
 
+        <!-- Sección Número de Palabras -->
         <div class="configuracion-seccion">
-            <label for="num-palabras"><strong>Número de palabras:</strong></label>
-            <input type="number" id="num-palabras" value="10" min="1" max="50">
-             <!-- Puedes ajustar el 'max' si quieres -->
+            <label for="num-palabras-input"><strong>Número de palabras (<span id="num-palabras-valor">10</span>):</strong></label>
+            <div class="config-slider-container">
+                 <input type="range" id="num-palabras-slider" value="10" min="1" max="50" step="1">
+                 <!-- Puedes ajustar max si quieres más -->
+                 <input type="number" id="num-palabras-input" value="10" min="1" max="50">
+                 <!-- Mantenemos el input numérico sincronizado -->
+            </div>
         </div>
     </div>
-    <!-- ****** FIN NUEVA SECCIÓN ****** -->
+    <!-- ****** FIN SECCIÓN CONFIGURACIÓN ****** -->
 
 
     <div class="controles">
