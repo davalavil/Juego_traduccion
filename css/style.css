@@ -1,148 +1,237 @@
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* Fuente más moderna y compatible */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     line-height: 1.6;
     margin: 20px;
-    background-color: #f8f9fa; /* Un gris muy claro */
-    color: #212529; /* Negro suave */
+    background-color: #f8f9fa;
+    color: #212529;
 }
 
 h1, h2 {
     text-align: center;
-    color: #343a40; /* Gris oscuro */
+    color: #343a40;
     margin-bottom: 1em;
 }
 
 h1 {
-    font-weight: 300; /* Título principal más ligero */
+    font-weight: 300;
 }
+
+/* --- NUEVOS ESTILOS PARA CONFIGURACIÓN --- */
+.configuracion-container {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #e9ecef; /* Fondo ligeramente distinto */
+    border-radius: 0.3rem;
+    display: flex; /* Para poner secciones lado a lado si caben */
+    flex-wrap: wrap; /* Permitir que pasen abajo si no caben */
+    gap: 20px; /* Espacio entre secciones */
+    justify-content: center; /* Centrar secciones */
+    border: 1px solid #dee2e6;
+}
+
+.configuracion-seccion {
+    margin-bottom: 10px;
+    flex: 1 1 250px; /* Permite crecer/decrecer, base de 250px */
+    min-width: 200px; /* Ancho mínimo */
+}
+
+.configuracion-seccion label {
+    display: block; /* La etiqueta principal en su propia línea */
+    margin-bottom: 8px;
+    color: #495057;
+    font-weight: 500;
+}
+
+.unidad-checkboxes-container {
+    max-height: 150px; /* Altura máxima para checkboxes */
+    overflow-y: auto; /* Scroll si hay muchas unidades */
+    background-color: #fff; /* Fondo blanco para la caja de scroll */
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+.unidad-checkbox {
+    display: block; /* Cada checkbox en su línea */
+    margin-bottom: 5px;
+}
+
+.unidad-checkbox label {
+    display: inline-block; /* Etiqueta al lado del checkbox */
+    margin-left: 5px;
+    font-weight: normal; /* Resetear negrita si hereda */
+    color: #212529;
+    cursor: pointer;
+}
+
+.unidad-checkbox input[type="checkbox"] {
+    cursor: pointer;
+    vertical-align: middle; /* Alinear checkbox con texto */
+}
+
+#num-palabras {
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    font-size: 1em;
+    width: 70px; /* Ancho fijo para el número */
+    margin-top: 5px;
+}
+
+#num-palabras:focus {
+     border-color: #80bdff;
+     outline: 0;
+     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* --- FIN NUEVOS ESTILOS --- */
+
 
 .controles {
     text-align: center;
-    margin-bottom: 30px; /* Más espacio */
-    padding-bottom: 20px;
-    border-bottom: 1px solid #dee2e6; /* Separador ligero */
+    margin-top: 20px; /* Añadido margen superior */
+    margin-bottom: 30px;
+    padding-top: 20px; /* Añadido padding superior */
+    border-top: 1px solid #dee2e6; /* Separador arriba */
 }
 
 .controles button {
-    padding: 10px 18px; /* Botones un poco más grandes */
+    padding: 10px 18px;
     margin: 5px 8px;
     cursor: pointer;
-    background-color: #007bff; /* Azul primario */
+    background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 0.25rem; /* Bordes redondeados estándar */
+    border-radius: 0.25rem;
     font-size: 0.95em;
-    transition: background-color 0.2s ease-in-out, transform 0.1s ease; /* Transición suave */
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
 }
 
 .controles button:hover {
-    background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+    background-color: #0056b3;
 }
 
 .controles button:active {
-    transform: scale(0.98); /* Efecto al hacer clic */
+    transform: scale(0.98);
+}
+
+#modo-actual {
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.estado-info { /* Estilo para mensajes de estado */
+    text-align: center;
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    min-height: 1.2em; /* Espacio reservado para que no salte el layout */
 }
 
 #area-juego {
-    max-width: 700px; /* Un poco más ancho */
-    margin: 30px auto;
+    max-width: 700px;
+    margin: 20px auto; /* Reducido margen superior */
     padding: 20px;
-    background-color: #ffffff; /* Fondo blanco */
+    background-color: #ffffff;
     border-radius: 0.3rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .fila-palabra {
     display: flex;
-    /* Quitamos justify-content para usar gap */
-    align-items: center; /* Alinear verticalmente al centro */
+    align-items: center;
     margin-bottom: 12px;
     padding-bottom: 12px;
-    border-bottom: 1px solid #e9ecef; /* Separador muy ligero */
-    gap: 15px; /* Espacio entre elementos de la fila */
+    border-bottom: 1px solid #e9ecef;
+    gap: 15px;
 }
 
 .fila-palabra:last-child {
-    margin-bottom: 0; /* Quitar margen inferior de la última fila */
+    margin-bottom: 0;
     padding-bottom: 0;
-    border-bottom: none; /* Quitar borde inferior de la última fila */
+    border-bottom: none;
 }
 
 .palabra-mostrada {
-    flex: 1 1 25%; /* Crece/decrece, base 25% */
-    font-weight: 600; /* Semibold */
-    text-align: right; /* Alinear a la derecha */
-    color: #495057; /* Gris medio */
+    flex: 1 1 25%;
+    font-weight: 600;
+    text-align: right;
+    color: #495057;
 }
 
-/* --- Estilo para la Unidad --- */
 .unidad {
-    flex: 0 0 auto; /* No crece, no decrece, tamaño automático */
-    font-size: 0.8em; /* Más pequeño */
-    color: #6c757d;  /* Gris secundario */
-    text-align: left; /* Alinear a la izquierda */
-    white-space: nowrap; /* Evitar que se parta en dos líneas */
+    flex: 0 0 auto;
+    font-size: 0.8em;
+    color: #6c757d;
+    text-align: left;
+    white-space: nowrap;
     font-style: italic;
 }
-/* --- Fin Estilo Unidad --- */
 
 .respuesta-usuario {
-    flex: 1 1 40%; /* Crece/decrece, base 40% */
-    padding: 8px 10px; /* Más padding interno */
-    border: 1px solid #ced4da; /* Borde estándar */
+    flex: 1 1 40%;
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
     border-radius: 0.25rem;
     font-size: 1em;
 }
 
 .respuesta-usuario:focus {
-     border-color: #80bdff; /* Resaltar borde al enfocar */
+     border-color: #80bdff;
      outline: 0;
      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .resultado {
-    flex: 0 0 50px; /* No crece/decrece, ancho fijo */
+    flex: 0 0 50px;
     text-align: center;
     font-weight: bold;
-    padding: 8px 5px; /* Padding vertical igual que input */
+    padding: 8px 5px;
     border-radius: 0.25rem;
     font-size: 0.9em;
 }
 
-/* Clases para resultado correcto/incorrecto */
 .resultado-correcto {
-    background-color: #d1e7dd; /* Verde Bootstrap más sutil */
+    background-color: #d1e7dd;
     color: #0f5132;
     border: 1px solid #badbcc;
 }
 
 .resultado-incorrecto {
-    background-color: #f8d7da; /* Rojo Bootstrap */
+    background-color: #f8d7da;
     color: #842029;
     border: 1px solid #f5c2c7;
 }
 
-/* Estilos para la lista oculta/mostrada */
 #lista-palabras {
-    max-width: 700px; /* Mismo ancho que área de juego */
+    max-width: 700px;
     margin: 30px auto;
     padding: 20px;
-    background-color: #e9ecef; /* Fondo gris claro */
+    background-color: #e9ecef;
     border-radius: 0.3rem;
     border: 1px solid #ced4da;
 }
 
 #lista-palabras h2 {
      margin-top: 0;
-     margin-bottom: 15px;
+     margin-bottom: 10px; /* Reducido */
      color: #495057;
      font-weight: 500;
 }
 
+#lista-info { /* Estilo específico para info de la lista */
+    margin-top: -5px;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+
 #contenido-lista {
-     max-height: 300px; /* Altura máxima con scroll si es muy larga */
-     overflow-y: auto; /* Scroll vertical si es necesario */
-     padding-right: 10px; /* Espacio para el scrollbar */
+     max-height: 300px;
+     overflow-y: auto;
+     padding-right: 10px;
 }
 
 #contenido-lista p {
@@ -151,7 +240,6 @@ h1 {
     color: #343a40;
 }
 
-/* Clase para ocultar elementos */
 .oculto {
     display: none;
 }
