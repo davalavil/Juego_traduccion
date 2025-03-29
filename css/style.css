@@ -1,0 +1,103 @@
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+.controles {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.controles button {
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.controles button:hover {
+    background-color: #0056b3;
+}
+
+#area-juego {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fila-palabra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.palabra-mostrada {
+    flex-basis: 30%; /* Ajusta según necesidad */
+    font-weight: bold;
+}
+
+.respuesta-usuario {
+    flex-basis: 40%; /* Ajusta según necesidad */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.resultado {
+    flex-basis: 15%; /* Ajusta según necesidad */
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 3px;
+    min-width: 40px; /* Para que SÍ/NO no cambie mucho el ancho */
+}
+
+/* Clases para resultado correcto/incorrecto */
+.resultado-correcto {
+    background-color: #d4edda; /* Verde claro */
+    color: #155724;
+}
+
+.resultado-incorrecto {
+    background-color: #f8d7da; /* Rojo claro */
+    color: #721c24;
+}
+
+/* Estilos para la lista oculta/mostrada */
+#lista-palabras {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+#lista-palabras h2 {
+     margin-top: 0;
+}
+
+#contenido-lista p {
+    margin: 2px 0;
+    font-size: 0.9em;
+}
+
+.oculto {
+    display: none;
+}
