@@ -1,39 +1,52 @@
+/* --- Estilos Base (Para Escritorio y General) --- */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     line-height: 1.6;
     margin: 0;
-    padding: 20px;
+    padding: 15px; /* Reducido padding base para móviles */
     background-color: #f8f9fa;
     color: #212529;
     min-height: 100vh;
+    font-size: 16px; /* Tamaño base */
 }
 
 h1, h2 {
     text-align: center;
     color: #343a40;
-    margin-bottom: 1em;
+    margin-bottom: 0.8em; /* Ajustado margen */
+    margin-top: 0.5em;
 }
-h1 { font-weight: 300; margin-top: 0; }
+h1 { font-weight: 300; font-size: 1.8em; } /* Tamaño ajustado */
+h2 { font-size: 1.3em; font-weight: 500; }
 
-/* --- Configuración --- */
+/* --- Contenedor Principal de Configuración --- */
 .configuracion-container {
     max-width: 800px;
-    margin: 20px auto 30px auto;
-    padding: 20px 25px;
+    margin: 15px auto 25px auto; /* Márgenes ajustados */
+    padding: 15px; /* Padding reducido */
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
+    flex-wrap: wrap; /* Clave para responsividad */
+    gap: 20px; /* Espacio ajustado */
     border: 1px solid #dee2e6;
 }
-.configuracion-seccion { flex: 1 1 300px; min-width: 250px; }
-.configuracion-seccion > label { display: block; margin-bottom: 12px; color: #495057; font-weight: 600; font-size: 1.05em; }
+.configuracion-seccion {
+    flex: 1 1 280px; /* Flex basis un poco menor */
+    min-width: 240px;
+}
+.configuracion-seccion > label {
+    display: block;
+    margin-bottom: 10px;
+    color: #495057;
+    font-weight: 600;
+    font-size: 1em; /* Tamaño ajustado */
+}
 
 /* Unidades con Botones */
-.unidades-botones-control { margin-bottom: 10px; display: flex; gap: 10px; }
-.btn-control-unidad { padding: 5px 10px; font-size: 0.85em; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; }
+.unidades-botones-control { margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; } /* Permitir wrap */
+.btn-control-unidad { padding: 6px 12px; font-size: 0.8em; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; }
 .btn-control-unidad:hover { background-color: #5a6268; }
 .botones-container { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 5px; }
 .unidad-btn { padding: 6px 12px; border: 1px solid #ced4da; background-color: #ffffff; color: #495057; border-radius: 20px; cursor: pointer; font-size: 0.9em; transition: background-color 0.2s, border-color 0.2s, color 0.2s; user-select: none; }
@@ -41,38 +54,207 @@ h1 { font-weight: 300; margin-top: 0; }
 .unidad-btn.selected { background-color: #0d6efd; color: white; border-color: #0d6efd; font-weight: 500; }
 
 /* Slider y Número */
-.config-slider-container { display: flex; align-items: center; gap: 15px; margin-top: 8px; }
-input[type="range"] { flex-grow: 1; cursor: pointer; height: 8px; background: #dee2e6; border-radius: 5px; appearance: none; -webkit-appearance: none; }
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: #007bff; border-radius: 50%; cursor: pointer; }
+.config-slider-container { display: flex; align-items: center; gap: 10px; margin-top: 8px; } /* Gap reducido */
+input[type="range"] { flex-grow: 1; cursor: pointer; height: 8px; background: #dee2e6; border-radius: 5px; appearance: none; -webkit-appearance: none; min-width: 80px; /* Ancho mínimo para el slider */ }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: #007bff; border-radius: 50%; cursor: pointer; margin-top: -5px; /* Centrado vertical aproximado */ }
 input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; background: #007bff; border-radius: 50%; cursor: pointer; border: none; }
 input[type="range"]::-moz-range-track { width: 100%; height: 8px; background: #dee2e6; border-radius: 5px; cursor: pointer; }
-#num-palabras-input { padding: 8px 10px; border: 1px solid #ced4da; border-radius: 0.25rem; font-size: 1em; width: 70px; }
+#num-palabras-input { padding: 8px 10px; border: 1px solid #ced4da; border-radius: 0.25rem; font-size: 1em; width: 65px; /* Ancho ajustado */ text-align: center; }
 #num-palabras-input:focus { border-color: #80bdff; outline: 0; box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }
-#num-palabras-valor { font-weight: bold; color: #007bff; }
+#num-palabras-valor { font-weight: bold; color: #007bff; min-width: 20px; text-align: right;} /* Asegurar espacio */
 
 /* --- Controles Principales --- */
-.controles { text-align: center; margin-top: 20px; margin-bottom: 30px; padding-top: 20px; border-top: 1px solid #dee2e6; }
-.controles button { padding: 10px 18px; margin: 5px 8px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 0.25rem; font-size: 0.95em; transition: background-color 0.2s ease-in-out, transform 0.1s ease; }
+.controles {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+    display: flex; /* Hacerlos flex para mejor control */
+    flex-wrap: wrap; /* Permitir que bajen en pantallas pequeñas */
+    justify-content: center; /* Centrar los botones */
+    gap: 10px; /* Espacio entre botones */
+}
+.controles button {
+    padding: 10px 15px; /* Padding ajustado */
+    margin: 0; /* Quitar margen, usar gap */
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 0.9em; /* Tamaño de fuente ajustado */
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+    flex: 1 1 auto; /* Permitir crecer pero base automática */
+    max-width: 180px; /* Ancho máximo por botón */
+}
 .controles button:hover { background-color: #0056b3; }
 .controles button:active { transform: scale(0.98); }
 
 /* --- Área de Juego y Lista --- */
 #modo-actual { font-size: 1.1em; font-weight: 500; }
-.estado-info { text-align: center; font-size: 0.9em; color: #6c757d; margin-top: -10px; margin-bottom: 15px; min-height: 1.2em; }
-#area-juego { max-width: 700px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 0.3rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); min-height: 50px; /* Altura mínima por si no hay palabras */ }
-.fila-palabra { display: flex; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #e9ecef; gap: 15px; }
+.estado-info { text-align: center; font-size: 0.85em; color: #6c757d; margin-top: -10px; margin-bottom: 15px; min-height: 1.2em; }
+#area-juego { max-width: 700px; margin: 20px auto; padding: 15px; background-color: #ffffff; border-radius: 0.3rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); min-height: 50px; }
+.fila-palabra { display: flex; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e9ecef; gap: 10px; /* Espacio base */ }
 .fila-palabra:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-.palabra-mostrada { flex: 1 1 25%; font-weight: 600; text-align: right; color: #495057; }
-.unidad { flex: 0 0 auto; font-size: 0.8em; color: #6c757d; text-align: left; white-space: nowrap; font-style: italic; }
-.respuesta-usuario { flex: 1 1 40%; padding: 8px 10px; border: 1px solid #ced4da; border-radius: 0.25rem; font-size: 1em; }
+.palabra-mostrada { flex: 1 1 25%; font-weight: 600; text-align: right; color: #495057; word-break: break-word; /* Evitar overflow horizontal */ }
+.unidad { flex: 0 0 auto; font-size: 0.75em; color: #6c757d; text-align: left; white-space: nowrap; font-style: italic; }
+.respuesta-usuario { flex: 1 1 40%; padding: 8px 10px; border: 1px solid #ced4da; border-radius: 0.25rem; font-size: 0.95em; /* Ligeramente menor */ }
 .respuesta-usuario:focus { border-color: #80bdff; outline: 0; box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }
-.resultado { flex: 0 0 50px; text-align: center; font-weight: bold; padding: 8px 5px; border-radius: 0.25rem; font-size: 0.9em; }
+.resultado { flex: 0 0 45px; /* Ancho reducido */ text-align: center; font-weight: bold; padding: 8px 2px; /* Menos padding horizontal */ border-radius: 0.25rem; font-size: 0.85em; }
 .resultado-correcto { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
 .resultado-incorrecto { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
-#lista-palabras { max-width: 700px; margin: 30px auto; padding: 20px; background-color: #e9ecef; border-radius: 0.3rem; border: 1px solid #ced4da; }
+#lista-palabras { max-width: 700px; margin: 30px auto; padding: 15px; background-color: #e9ecef; border-radius: 0.3rem; border: 1px solid #ced4da; }
 #lista-palabras h2 { margin-top: 0; margin-bottom: 10px; color: #495057; font-weight: 500; }
 #lista-info { margin-top: -5px; margin-bottom: 15px; font-style: italic; }
 #contenido-lista { max-height: 300px; overflow-y: auto; padding-right: 10px; }
-#contenido-lista p { margin: 4px 0; font-size: 0.9em; color: #343a40; }
+#contenido-lista p { margin: 4px 0; font-size: 0.9em; color: #343a40; word-break: break-word; /* Evitar overflow */ }
 
 .oculto { display: none; }
+
+
+/* --- MEDIA QUERIES PARA RESPONSIVIDAD --- */
+
+/* Estilos para Tablets y Móviles Grandes (hasta 768px) */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; /* Aún menos padding general */
+        font-size: 15px; /* Reducir ligeramente tamaño base */
+    }
+    h1 { font-size: 1.6em; }
+    h2 { font-size: 1.2em; }
+
+    .configuracion-container {
+        padding: 15px;
+        gap: 15px;
+    }
+    .configuracion-seccion {
+        flex-basis: 100%; /* Hacer que cada sección ocupe todo el ancho */
+    }
+    .config-slider-container {
+        flex-wrap: wrap; /* Permitir que input baje si no cabe */
+    }
+    input[type="range"] {
+         min-width: 60px; /* Asegurar un mínimo */
+    }
+     #num-palabras-input {
+         width: 60px; /* Input numérico más pequeño */
+    }
+
+    .controles {
+        gap: 8px;
+    }
+    .controles button {
+        font-size: 0.85em;
+        padding: 8px 12px;
+        max-width: none; /* Permitir que ocupen más ancho si es necesario */
+        flex: 1 1 150px; /* Base para que intenten caber 2 o 3 por línea */
+    }
+
+    #area-juego, #lista-palabras {
+        padding: 15px;
+    }
+
+    /* Ajustar fila de palabras para mejor lectura */
+    .fila-palabra {
+        gap: 8px; /* Reducir espacio */
+        align-items: flex-start; /* Alinear arriba por si las alturas varían */
+    }
+    .palabra-mostrada {
+        flex-basis: 30%; /* Darle un poco más de espacio base */
+        text-align: left; /* Alinear izquierda puede ser mejor */
+    }
+    .unidad {
+        font-size: 0.7em; /* Aún más pequeño */
+    }
+    .respuesta-usuario {
+        flex-basis: 45%; /* Más espacio para escribir */
+        font-size: 0.9em;
+    }
+    .resultado {
+        flex-basis: 40px; /* Base fija pequeña */
+        font-size: 0.8em;
+        align-self: center; /* Centrar verticalmente el resultado */
+    }
+}
+
+/* Estilos para Móviles Pequeños (hasta 480px) */
+@media (max-width: 480px) {
+    body {
+        font-size: 14px; /* Reducir más el tamaño base */
+    }
+    h1 { font-size: 1.4em; }
+    h2 { font-size: 1.1em; }
+
+    .configuracion-container {
+        padding: 10px;
+    }
+    .configuracion-seccion > label {
+        font-size: 0.95em;
+    }
+    .botones-container {
+        gap: 6px; /* Menos espacio entre botones de unidad */
+    }
+    .unidad-btn {
+        font-size: 0.8em;
+        padding: 5px 10px;
+    }
+    .config-slider-container {
+        /* Forzar stack vertical */
+        flex-direction: column;
+        align-items: stretch; /* Ocupar todo el ancho */
+        gap: 10px;
+    }
+    #num-palabras-input {
+        width: 100%; /* Input numérico ocupa todo el ancho */
+        box-sizing: border-box; /* Incluir padding/border en el ancho */
+    }
+
+    .controles button {
+        font-size: 0.8em;
+        padding: 8px 10px;
+        flex: 1 1 100%; /* Hacer que cada botón ocupe una línea */
+        max-width: 100%;
+    }
+
+    /* Apilar elementos en la fila de palabras */
+    .fila-palabra {
+        flex-direction: column; /* ¡Stack vertical! */
+        align-items: stretch; /* Elementos ocupan el ancho */
+        border-bottom: 1px solid #ccc; /* Borde más visible */
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+    .palabra-mostrada {
+        text-align: left; /* Alinear a la izquierda */
+        font-size: 1.05em; /* Hacer palabra principal más grande */
+        margin-bottom: 5px;
+        flex-basis: auto; /* Resetear flex-basis */
+    }
+    .unidad {
+         text-align: left;
+         margin-bottom: 8px;
+         flex-basis: auto;
+    }
+    .respuesta-usuario {
+        width: 100%; /* Ocupar todo el ancho */
+        box-sizing: border-box;
+        font-size: 1em; /* Tamaño de fuente normal para input */
+        margin-bottom: 8px;
+        flex-basis: auto;
+    }
+    .resultado {
+        width: auto; /* Ancho automático */
+        text-align: left; /* Alinear resultado a la izquierda */
+        padding: 5px 0; /* Solo padding vertical */
+        align-self: flex-start; /* Alinear a la izquierda */
+        background-color: transparent !important; /* Quitar fondo */
+        border: none !important; /* Quitar borde */
+        flex-basis: auto;
+    }
+     .resultado-correcto { color: #0f5132 !important; } /* Solo cambiar color texto */
+     .resultado-incorrecto { color: #842029 !important; } /* Solo cambiar color texto */
+
+    #lista-palabras { padding: 10px; }
+    #contenido-lista p { font-size: 0.85em;}
+}
