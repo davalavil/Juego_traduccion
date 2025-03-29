@@ -4,27 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego de Traducción</title>
-    <!-- Asegúrate que la ruta al CSS sea correcta (p.ej., css/style.css) -->
+    <!-- Ruta CSS correcta (p.ej., css/style.css) -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <h1>Juego de Traducción</h1>
 
-    <!-- ****** SECCIÓN DE CONFIGURACIÓN MEJORADA ****** -->
+    <!-- Sección Configuración (sin cambios) -->
     <div class="configuracion-container">
-        <!-- Sección Unidades -->
         <div class="configuracion-seccion">
             <label><strong>Unidades a incluir:</strong></label>
             <div class="unidades-botones-control">
                 <button id="btn-select-all" class="btn-control-unidad">Seleccionar Todas</button>
                 <button id="btn-deselect-all" class="btn-control-unidad">Deseleccionar Todas</button>
             </div>
-            <div id="unidades-botones-container" class="botones-container">
-                <!-- Los botones de unidad se generarán aquí por JS -->
-            </div>
+            <div id="unidades-botones-container" class="botones-container"></div>
         </div>
-
-        <!-- Sección Número de Palabras -->
         <div class="configuracion-seccion">
             <label for="num-palabras-input"><strong>Número de palabras (<span id="num-palabras-valor">10</span>):</strong></label>
             <div class="config-slider-container">
@@ -33,33 +28,34 @@
             </div>
         </div>
     </div>
-    <!-- ****** FIN SECCIÓN CONFIGURACIÓN ****** -->
 
-
-    <div class="controles">
+    <!-- ****** GRUPOS DE BOTONES SEPARADOS ****** -->
+    <!-- Grupo 1: Botones de Modo -->
+    <div class="controles controles-modo">
         <button id="btn-modo-ing-esp">Inglés -> Español</button>
         <button id="btn-modo-esp-ing">Español -> Inglés</button>
+    </div>
+
+    <!-- Grupo 2: Botones de Acción -->
+    <div class="controles controles-acciones">
         <button id="btn-copiar">Nuevas Palabras</button>
         <button id="btn-borrar">Borrar Respuestas</button>
         <button id="btn-mostrar-lista">Mostrar/Ocultar Lista</button>
     </div>
+    <!-- ****** FIN GRUPOS SEPARADOS ****** -->
 
     <h2 id="modo-actual">Modo: Inglés -> Español</h2>
-    <div id="estado-generacion" class="estado-info"></div> <!-- Para mensajes de estado -->
+    <div id="estado-generacion" class="estado-info"></div>
 
-    <div id="area-juego">
-         <!-- Las palabras y campos de respuesta se generarán aquí -->
-    </div>
+    <div id="area-juego"></div>
 
     <div id="lista-palabras" class="oculto">
         <h2>Lista de Referencia</h2>
-         <p id="lista-info" class="estado-info"></p> <!-- Info sobre la lista mostrada -->
-        <div id="contenido-lista">
-            <!-- La lista completa se mostrará aquí -->
-        </div>
+         <p id="lista-info" class="estado-info"></p>
+        <div id="contenido-lista"></div>
     </div>
 
-    <!-- Asegúrate que las rutas a JS sean correctas (p.ej., js/palabras.js y js/script.js) -->
+    <!-- Rutas JS correctas (p.ej., js/palabras.js y js/script.js) -->
     <script src="js/palabras.js"></script>
     <script src="js/script.js"></script>
 </body>
