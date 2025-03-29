@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Traducción</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Juego de Traducción</h1>
+
+    <div class="controles">
+        <button id="btn-modo-ing-esp">Inglés -> Español</button>
+        <button id="btn-modo-esp-ing">Español -> Inglés</button>
+        <button id="btn-copiar">Nuevas Palabras</button>
+        <button id="btn-borrar">Borrar Respuestas</button>
+        <button id="btn-mostrar-lista">Mostrar/Ocultar Lista</button>
+    </div>
+
+    <h2 id="modo-actual">Modo: Inglés -> Español</h2>
+
+    <div id="area-juego">
+        <!-- Las palabras y campos de respuesta se generarán aquí con JavaScript -->
+    </div>
+
+    <div id="lista-palabras" class="oculto">
+        <h2>Lista de Referencia</h2>
+        <div id="contenido-lista">
+            <!-- La lista completa se mostrará aquí -->
+        </div>
+    </div>
+
+    <!-- Importante: Cargar las palabras ANTES que el script principal -->
+    <script src="palabras.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
