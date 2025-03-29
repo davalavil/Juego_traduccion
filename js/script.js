@@ -1,4 +1,4 @@
-// --- Referencias a Elementos del DOM ---
+// --- Referencias a Elementos del DOM (Verificar que existen) ---
 const btnModoIngEsp = document.getElementById('btn-modo-ing-esp');
 const btnModoEspIng = document.getElementById('btn-modo-esp-ing');
 const btnCopiar = document.getElementById('btn-copiar');
@@ -10,8 +10,6 @@ const listaPalabrasDiv = document.getElementById('lista-palabras');
 const contenidoListaDiv = document.getElementById('contenido-lista');
 const listaInfoP = document.getElementById('lista-info');
 const estadoGeneracionDiv = document.getElementById('estado-generacion');
-
-// --- Nuevas Referencias para Configuración ---
 const unidadesBotonesContainer = document.getElementById('unidades-botones-container');
 const btnSelectAll = document.getElementById('btn-select-all');
 const btnDeselectAll = document.getElementById('btn-deselect-all');
@@ -22,7 +20,6 @@ const numPalabrasValorSpan = document.getElementById('num-palabras-valor');
 // --- Estado del Juego ---
 let modo = 'ing-esp';
 let palabrasActuales = [];
-// El número de palabras ahora se lee directamente de los inputs
 
 // --- Funciones ---
 
@@ -38,43 +35,42 @@ function obtenerClaves() {
     return modo === 'ing-esp' ? { mostrar: 'eng', traducir: 'esp' } : { mostrar: 'esp', traducir: 'eng' };
 }
 
-// --- LÓGICA MEJORADA PARA UNIDADES CON BOTONES ---
+// --- LÓGICA UNIDADES CON BOTONES (CORREGIDA) ---
 
 function obtenerUnidadesDisponibles() {
     const unidades = new Set();
-    if (typeof listaIngEsp !== 'undefined') {
-        listaIngEsp.forEach(p => { if (p.unit) unidades.add(p.unit); });
-    }
-    if (typeof listaEspIng !== 'undefined') {
-        listaEspIng.forEach(p => { if (p.unit) unidades.add(p.unit); });
-    }
+    const listaCompleta = (typeof listaIngEsp !== 'undefined' ? listaIngEsp : []).concat(typeof listaEspIng !== 'undefined' ? listaEspIng : []);
+    listaCompleta.forEach(p => { if (p && p.unit) unidades.add(p.unit); });
+
     return Array.from(unidades).sort((a, b) => {
-         // Ordenar numéricamente si son del tipo "File X"
         const matchA = a.match(/File (\d+)/);
         const matchB = b.match(/File (\d+)/);
         if (matchA && matchB) {
             return parseInt(matchA[1], 10) - parseInt(matchB[1], 10);
         }
-        return a.localeCompare(b); // Orden alfabético normal para otros casos
+        return a.localeCompare(b);
     });
 }
 
 // Crea los BOTONES para cada unidad
 function renderizarBotonesUnidades() {
-    if (!unidadesBotonesContainer) return;
-    unidadesBotonesContainer.innerHTML = ''; // Limpiar
+    if (!unidadesBotonesContainer) {
+        console.error("Error: Contenedor de botones de unidad no encontrado.");
+        return;
+    }
+    unidadesBotonesContainer.innerHTML = '';
     const unidades = obtenerUnidadesDisponibles();
 
     unidades.forEach(unidad => {
         const button = document.createElement('button');
-        button.classList.add('unidad-btn');
+        button.classList.add('unidad-btn', 'selected'); // Empezar seleccionadas
         button.textContent = unidad;
-        button.dataset.unidad = unidad; // Guardar el valor en data attribute
-        button.classList.add('selected'); // Empezar seleccionadas por defecto
+        button.dataset.unidad = unidad;
 
-        // Event listener para Togglar selección
+        // Listener CORREGIDO: Simplemente alterna la clase al hacer clic.
         button.addEventListener('click', () => {
             button.classList.toggle('selected');
+            console.log(`Botón ${unidad} clickeado, estado selected: ${button.classList.contains('selected')}`); // Log para depurar
         });
 
         unidadesBotonesContainer.appendChild(button);
@@ -83,6 +79,7 @@ function renderizarBotonesUnidades() {
 
 // Selecciona o deselecciona todos los botones de unidad
 function toggleAllUnidades(seleccionar) {
+    if (!unidadesBotonesContainer) return;
     const botones = unidadesBotonesContainer.querySelectorAll('.unidad-btn');
     botones.forEach(btn => {
         if (seleccionar) {
@@ -91,46 +88,68 @@ function toggleAllUnidades(seleccionar) {
             btn.classList.remove('selected');
         }
     });
+    console.log(`Toggle All: ${seleccionar}`); // Log para depurar
 }
 
-// Obtiene las unidades actualmente seleccionadas (leyendo los botones)
+// Obtiene las unidades actualmente seleccionadas
 function obtenerUnidadesSeleccionadas() {
     const unidades = [];
+    if (!unidadesBotonesContainer) return unidades; // Devolver array vacío si no existe
     const botonesSeleccionados = unidadesBotonesContainer.querySelectorAll('.unidad-btn.selected');
     botonesSeleccionados.forEach(btn => {
         unidades.push(btn.dataset.unidad);
     });
+    console.log("Unidades Seleccionadas:", unidades); // Log para depurar
     return unidades;
 }
+// --- FIN LÓGICA UNIDADES ---
 
-// --- FIN LÓGICA UNIDADES CON BOTONES ---
-
-// --- LÓGICA PARA SLIDER/INPUT NÚMERO DE PALABRAS ---
+// --- LÓGICA SLIDER/INPUT (REVISADA Y ASEGURADA) ---
 function sincronizarNumPalabras(sourceElement) {
-    if (!numPalabrasSlider || !numPalabrasInput || !numPalabrasValorSpan) return;
+    // Verificar que todos los elementos existen antes de operar
+    if (!numPalabrasSlider || !numPalabrasInput || !numPalabrasValorSpan) {
+        console.error("Error: Elementos del slider/input no encontrados.");
+        return;
+    }
+
     let valor = parseInt(sourceElement.value, 10);
     const min = parseInt(numPalabrasSlider.min, 10);
     const max = parseInt(numPalabrasSlider.max, 10);
 
-    // Validar y corregir valor
-    if (isNaN(valor)) valor = min;
+    // Validar (importante para evitar NaN o valores fuera de rango)
+    if (isNaN(valor)) {
+        // Si no es un número (ej. input vacío), usar el valor del slider o min
+        valor = parseInt(numPalabrasSlider.value, 10) || min;
+    }
     if (valor < min) valor = min;
     if (valor > max) valor = max;
 
-    // Actualizar ambos inputs y el span
+    console.log(`Sincronizando: source=${sourceElement.id}, rawValue=${sourceElement.value}, parsedValue=${valor}`); // Log
+
+    // Actualizar todos los elementos relacionados
     numPalabrasSlider.value = valor;
     numPalabrasInput.value = valor;
     numPalabrasValorSpan.textContent = valor;
 
-     // Si la fuente era el input y el valor era inválido, corregirlo
+    // Si la fuente era el input y el valor tuvo que ser corregido (p.ej. estaba vacío o fuera de rango)
+    // lo reescribimos en el input para que el usuario vea la corrección.
+    // Hacemos esto en un setTimeout pequeño para evitar posibles conflictos si el navegador
+    // aún está procesando el evento 'input'.
     if (sourceElement.type === 'number' && sourceElement.value !== valor.toString()) {
-         sourceElement.value = valor;
+        // console.log(`Corrigiendo input value de ${sourceElement.value} a ${valor}`);
+        // sourceElement.value = valor; // Puede causar problemas si se hace inmediatamente
+         setTimeout(() => {
+             // Re-verificar por si el usuario cambió algo más rápido
+             if (parseInt(numPalabrasInput.value, 10) !== valor) {
+                numPalabrasInput.value = valor;
+             }
+        }, 10);
     }
 }
 // --- FIN LÓGICA NÚMERO PALABRAS ---
 
 
-function barajarArray(array) {
+function barajarArray(array) { /* ... (sin cambios) ... */
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
@@ -138,56 +157,60 @@ function barajarArray(array) {
     return array;
 }
 
-// --- GENERAR PALABRAS (Adaptado a botones y slider) ---
+// --- GENERAR PALABRAS (Usa las funciones corregidas) ---
 function generarPalabras() {
+    if (!areaJuego || !estadoGeneracionDiv) {
+         console.error("Error fatal: área de juego o div de estado no encontrado.");
+         return;
+    }
     areaJuego.innerHTML = '';
     palabrasActuales = [];
-    listaPalabrasDiv.classList.add('oculto');
+    if(listaPalabrasDiv) listaPalabrasDiv.classList.add('oculto');
     estadoGeneracionDiv.textContent = '';
 
-    // 1. Obtener Unidades Seleccionadas (de los botones)
-    const unidadesSeleccionadas = obtenerUnidadesSeleccionadas();
+    // 1. Obtener Unidades Seleccionadas
+    const unidadesSeleccionadas = obtenerUnidadesSeleccionadas(); // Usa la función corregida
     if (unidadesSeleccionadas.length === 0) {
-        areaJuego.innerHTML = '<p style="color: red;">Error: Debes seleccionar al menos una unidad.</p>';
+        areaJuego.innerHTML = '<p style="color: red; text-align: center;">⚠️ Debes seleccionar al menos una unidad.</p>';
         return;
     }
 
-    // 2. Obtener Número de Palabras (del input numérico sincronizado)
-    let numPalabrasSolicitadas = 10; // Default
-     if (numPalabrasInput) {
+    // 2. Obtener Número de Palabras
+    let numPalabrasSolicitadas = 10; // Default robusto
+    if (numPalabrasInput) {
+        // Leer el valor validado directamente
         numPalabrasSolicitadas = parseInt(numPalabrasInput.value, 10);
-        // La validación ya se hace en sincronizarNumPalabras, pero aseguramos
-        const min = parseInt(numPalabrasInput.min, 10);
-        const max = parseInt(numPalabrasInput.max, 10);
-         if (isNaN(numPalabrasSolicitadas) || numPalabrasSolicitadas < min || numPalabrasSolicitadas > max) {
-             numPalabrasSolicitadas = 10; // Reset a default si algo falla
-             numPalabrasInput.value = 10;
-             numPalabrasSlider.value = 10;
-             numPalabrasValorSpan.textContent = 10;
+         // Doble verificación por si acaso
+         const min = parseInt(numPalabrasInput.min, 10);
+         const max = parseInt(numPalabrasInput.max, 10);
+         if(isNaN(numPalabrasSolicitadas) || numPalabrasSolicitadas < min || numPalabrasSolicitadas > max) {
+            console.warn("Valor inválido en numPalabrasInput al generar, usando 10.");
+            numPalabrasSolicitadas = 10;
          }
+    } else {
+        console.warn("Input de número de palabras no encontrado, usando 10.");
     }
-
 
     // 3. Obtener y Filtrar Lista Fuente
     let listaFiltrada = obtenerListaFuente();
-    if (!listaFiltrada || listaFiltrada.length === 0) {
+    if (!listaFiltrada || listaFiltrada.length === 0) { /* ... (sin cambios) ... */
         areaJuego.innerHTML = '<p>Error: No se pudo cargar la lista de palabras para este modo.</p>';
         return;
     }
-    listaFiltrada = listaFiltrada.filter(palabra => palabra.unit && unidadesSeleccionadas.includes(palabra.unit));
-
+    listaFiltrada = listaFiltrada.filter(palabra => palabra && palabra.unit && unidadesSeleccionadas.includes(palabra.unit));
 
     // 4. Verificar si hay suficientes palabras y ajustar
     let numPalabrasASeleccionar = numPalabrasSolicitadas;
-    let mensajeEstado = `Solicitadas: ${numPalabrasSolicitadas}. Unidades: ${unidadesSeleccionadas.join(', ')}. `;
-    if (listaFiltrada.length === 0) {
-        areaJuego.innerHTML = `<p style="color: orange;">No se encontraron palabras para las unidades seleccionadas (${unidadesSeleccionadas.join(', ')}) en el modo actual.</p>`;
+    let unidadesTexto = unidadesSeleccionadas.length === obtenerUnidadesDisponibles().length ? 'Todas' : unidadesSeleccionadas.join(', ');
+    let mensajeEstado = `Solicitadas: ${numPalabrasSolicitadas}. Unidades: ${unidadesTexto}. `;
+    if (listaFiltrada.length === 0) { /* ... (sin cambios) ... */
+        areaJuego.innerHTML = `<p style="color: orange; text-align: center;">ℹ️ No se encontraron palabras para las unidades seleccionadas (${unidadesTexto}) en el modo actual.</p>`;
         estadoGeneracionDiv.textContent = '';
         return;
-    } else if (listaFiltrada.length < numPalabrasSolicitadas) {
+    } else if (listaFiltrada.length < numPalabrasSolicitadas) { /* ... (sin cambios) ... */
         numPalabrasASeleccionar = listaFiltrada.length;
         mensajeEstado += `Mostrando ${numPalabrasASeleccionar} (todas las disponibles).`;
-    } else {
+    } else { /* ... (sin cambios) ... */
          mensajeEstado += `Mostrando ${numPalabrasASeleccionar}.`;
     }
     estadoGeneracionDiv.textContent = mensajeEstado;
@@ -196,7 +219,7 @@ function generarPalabras() {
     const palabrasSeleccionadas = barajarArray([...listaFiltrada]).slice(0, numPalabrasASeleccionar);
     palabrasActuales = palabrasSeleccionadas;
 
-    // 6. Renderizar las palabras (igual que antes)
+    // 6. Renderizar las palabras (sin cambios relevantes en la lógica interna)
     const claves = obtenerClaves();
     palabrasSeleccionadas.forEach((palabra, index) => {
         const fila = document.createElement('div');
@@ -225,9 +248,8 @@ function generarPalabras() {
     });
 }
 
-
 // Comprobar respuesta (sin cambios)
-function comprobarRespuesta(evento) {
+function comprobarRespuesta(evento) { /* ... (sin cambios) ... */
     const input = evento.target;
     const respuestaUsuario = input.value.trim();
     const respuestaCorrecta = input.dataset.correcta.trim();
@@ -252,8 +274,10 @@ function comprobarRespuesta(evento) {
     }
 }
 
+
 // Borrar respuestas (sin cambios)
-function borrarRespuestas() {
+function borrarRespuestas() { /* ... (sin cambios) ... */
+    if (!areaJuego || !estadoGeneracionDiv) return;
     const inputs = areaJuego.querySelectorAll('.respuesta-usuario');
     const resultados = areaJuego.querySelectorAll('.resultado');
     inputs.forEach(input => input.value = '');
@@ -261,12 +285,14 @@ function borrarRespuestas() {
         resultado.textContent = '';
         resultado.className = 'resultado';
     });
-     listaPalabrasDiv.classList.add('oculto');
+     if(listaPalabrasDiv) listaPalabrasDiv.classList.add('oculto');
      estadoGeneracionDiv.textContent = '';
 }
 
-// --- MOSTRAR LISTA (Adaptado a botones) ---
-function toggleLista() {
+
+// Mostrar/Ocultar Lista (usa obtenerUnidadesSeleccionadas corregida)
+function toggleLista() { /* ... (lógica interna mayormente sin cambios, pero usa la función corregida) ... */
+    if (!listaPalabrasDiv || !listaInfoP || !contenidoListaDiv) return;
     listaPalabrasDiv.classList.toggle('oculto');
     listaInfoP.textContent = '';
 
@@ -274,14 +300,11 @@ function toggleLista() {
         contenidoListaDiv.innerHTML = '';
         let listaFuente = obtenerListaFuente();
         const claves = obtenerClaves();
-
-        // Filtrar la lista mostrada según las unidades seleccionadas (botones)
-        const unidadesSeleccionadasLista = obtenerUnidadesSeleccionadas();
+        const unidadesSeleccionadasLista = obtenerUnidadesSeleccionadas(); // <-- Usa función corregida
         let infoUnidades = "Ninguna unidad seleccionada";
 
          if (unidadesSeleccionadasLista.length > 0) {
-            listaFuente = listaFuente.filter(palabra => palabra.unit && unidadesSeleccionadasLista.includes(palabra.unit));
-            // Comprobar si todas las disponibles están seleccionadas
+            listaFuente = listaFuente.filter(palabra => palabra && palabra.unit && unidadesSeleccionadasLista.includes(palabra.unit));
              const todasDisponibles = obtenerUnidadesDisponibles();
              if (unidadesSeleccionadasLista.length === todasDisponibles.length) {
                  infoUnidades = "Todas las unidades";
@@ -289,20 +312,15 @@ function toggleLista() {
                 infoUnidades = `Unidades: ${unidadesSeleccionadasLista.join(', ')}`;
              }
          } else {
-             listaFuente = []; // Vaciar lista si no hay unidades
+             listaFuente = [];
          }
          listaInfoP.textContent = `Mostrando lista para: ${infoUnidades}.`;
 
-
         if (listaFuente && listaFuente.length > 0) {
-            const listaOrdenada = [...listaFuente].sort((a, b) => {
-                const palabraA = a[claves.mostrar] || '';
-                const palabraB = b[claves.mostrar] || '';
-                return palabraA.localeCompare(palabraB);
-            });
-            listaOrdenada.forEach(palabra => {
+            const listaOrdenada = [...listaFuente].sort((a, b) => { /* ... */ return (a[claves.mostrar] || '').localeCompare(b[claves.mostrar] || ''); });
+            listaOrdenada.forEach(palabra => { /* ... */
                 const p = document.createElement('p');
-                p.textContent = `${palabra[claves.mostrar]} (${palabra.unit || ''}) = ${palabra[claves.traducir]}`;
+                p.textContent = `${palabra[claves.mostrar] || ''} (${palabra.unit || ''}) = ${palabra[claves.traducir] || ''}`;
                 contenidoListaDiv.appendChild(p);
             });
         } else if (unidadesSeleccionadasLista.length > 0) {
@@ -313,52 +331,51 @@ function toggleLista() {
     }
 }
 
-
-// Cambiar modo (sin cambios relevantes, limpia estado)
-function cambiarModo(nuevoModo) {
+// Cambiar modo (sin cambios)
+function cambiarModo(nuevoModo) { /* ... (sin cambios) ... */
     if (modo === nuevoModo) return;
     modo = nuevoModo;
-    modoActualDisplay.textContent = `Modo: ${modo === 'ing-esp' ? 'Inglés -> Español' : 'Español -> Inglés'}`;
-    areaJuego.innerHTML = '<p>Selecciona configuración y haz clic en "Nuevas Palabras".</p>';
-    listaPalabrasDiv.classList.add('oculto');
-    estadoGeneracionDiv.textContent = '';
+    if(modoActualDisplay) modoActualDisplay.textContent = `Modo: ${modo === 'ing-esp' ? 'Inglés -> Español' : 'Español -> Inglés'}`;
+    if(areaJuego) areaJuego.innerHTML = '<p>Selecciona configuración y haz clic en "Nuevas Palabras".</p>';
+    if(listaPalabrasDiv) listaPalabrasDiv.classList.add('oculto');
+    if(estadoGeneracionDiv) estadoGeneracionDiv.textContent = '';
 }
 
 
-// --- Asignación de Eventos ---
-if (btnModoIngEsp) btnModoIngEsp.addEventListener('click', () => cambiarModo('ing-esp'));
-if (btnModoEspIng) btnModoEspIng.addEventListener('click', () => cambiarModo('esp-ing'));
-if (btnCopiar) btnCopiar.addEventListener('click', generarPalabras);
-if (btnBorrar) btnBorrar.addEventListener('click', borrarRespuestas);
-if (btnMostrarLista) btnMostrarLista.addEventListener('click', toggleLista);
-
-// --- NUEVOS Event Listeners para Configuración ---
-if (btnSelectAll) btnSelectAll.addEventListener('click', () => toggleAllUnidades(true));
-if (btnDeselectAll) btnDeselectAll.addEventListener('click', () => toggleAllUnidades(false));
-
-// Sincronizar Slider y Input numérico
-if (numPalabrasSlider) {
-    numPalabrasSlider.addEventListener('input', () => sincronizarNumPalabras(numPalabrasSlider));
-}
-if (numPalabrasInput) {
-    numPalabrasInput.addEventListener('input', () => sincronizarNumPalabras(numPalabrasInput));
-     // Asegurar que el valor inicial se muestre correctamente
-    numPalabrasInput.addEventListener('change', () => sincronizarNumPalabras(numPalabrasInput)); // Para cambios al perder foco
-}
-
-
-// --- Inicialización ---
+// --- Asignación de Eventos (Asegurando que elementos existen) ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Renderizar botones de unidades al cargar
-    renderizarBotonesUnidades();
+    // Verificar existencia de todos los elementos ANTES de añadir listeners
+    const elementosExisten = btnModoIngEsp && btnModoEspIng && btnCopiar && btnBorrar && btnMostrarLista && modoActualDisplay && areaJuego && listaPalabrasDiv && contenidoListaDiv && listaInfoP && estadoGeneracionDiv && unidadesBotonesContainer && btnSelectAll && btnDeselectAll && numPalabrasSlider && numPalabrasInput && numPalabrasValorSpan;
 
-     // Sincronizar y mostrar valor inicial del número de palabras
-     if (numPalabrasSlider) sincronizarNumPalabras(numPalabrasSlider);
-
-    // Mensaje inicial
-    if (areaJuego) {
-        areaJuego.innerHTML = '<p>Selecciona configuración y haz clic en "Nuevas Palabras" para empezar.</p>';
-    } else {
-        console.error("Error: No se encontró el elemento 'area-juego'.");
+    if (!elementosExisten) {
+        console.error("Error Crítico: Faltan uno o más elementos HTML necesarios. Revisa los IDs en index.html y script.js.");
+        // Opcional: Mostrar mensaje al usuario
+        if (areaJuego) areaJuego.innerHTML = "<p style='color:red; font-weight:bold;'>Error: La página no se cargó correctamente. Faltan elementos.</p>";
+        return; // Detener la ejecución si falta algo esencial
     }
+
+    console.log("Todos los elementos encontrados, añadiendo listeners...");
+
+    // Listeners de controles principales
+    btnModoIngEsp.addEventListener('click', () => cambiarModo('ing-esp'));
+    btnModoEspIng.addEventListener('click', () => cambiarModo('esp-ing'));
+    btnCopiar.addEventListener('click', generarPalabras);
+    btnBorrar.addEventListener('click', borrarRespuestas);
+    btnMostrarLista.addEventListener('click', toggleLista);
+
+    // Listeners para controles de unidades
+    btnSelectAll.addEventListener('click', () => toggleAllUnidades(true));
+    btnDeselectAll.addEventListener('click', () => toggleAllUnidades(false));
+
+    // Listeners para Slider y Input numérico
+    numPalabrasSlider.addEventListener('input', () => sincronizarNumPalabras(numPalabrasSlider));
+    numPalabrasInput.addEventListener('input', () => sincronizarNumPalabras(numPalabrasInput));
+    numPalabrasInput.addEventListener('change', () => sincronizarNumPalabras(numPalabrasInput)); // Para cambios al perder foco o pegar
+
+    // --- Inicialización Final ---
+    renderizarBotonesUnidades(); // Crear botones de unidad
+    sincronizarNumPalabras(numPalabrasSlider); // Establecer valor inicial del span
+    areaJuego.innerHTML = '<p>Selecciona configuración y haz clic en "Nuevas Palabras" para empezar.</p>'; // Mensaje inicial
+
+    console.log("Inicialización completada.");
 });
