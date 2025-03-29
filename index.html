@@ -4,11 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego de Traducción</title>
-    <!-- Cambiado: Añadida la carpeta 'css/' a la ruta -->
+    <!-- Asegúrate que la ruta al CSS sea correcta (css/style.css si está en carpeta) -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <h1>Juego de Traducción</h1>
+
+    <!-- ****** NUEVA SECCIÓN DE CONFIGURACIÓN ****** -->
+    <div class="configuracion-container">
+        <div class="configuracion-seccion">
+            <label><strong>Unidades a incluir:</strong></label>
+            <div class="unidad-checkboxes-container">
+                <div class="unidad-checkbox">
+                     <input type="checkbox" id="check-todas" value="all" checked>
+                     <label for="check-todas">Todas las Unidades</label>
+                </div>
+                 <!-- Checkboxes de unidades específicas se generarán aquí por JS -->
+                <div id="unidad-checkboxes-especificas"></div>
+            </div>
+        </div>
+
+        <div class="configuracion-seccion">
+            <label for="num-palabras"><strong>Número de palabras:</strong></label>
+            <input type="number" id="num-palabras" value="10" min="1" max="50">
+             <!-- Puedes ajustar el 'max' si quieres -->
+        </div>
+    </div>
+    <!-- ****** FIN NUEVA SECCIÓN ****** -->
+
 
     <div class="controles">
         <button id="btn-modo-ing-esp">Inglés -> Español</button>
@@ -19,6 +42,7 @@
     </div>
 
     <h2 id="modo-actual">Modo: Inglés -> Español</h2>
+    <div id="estado-generacion" class="estado-info"></div> <!-- Para mensajes de estado -->
 
     <div id="area-juego">
         <!-- Las palabras y campos de respuesta se generarán aquí con JavaScript -->
@@ -26,12 +50,13 @@
 
     <div id="lista-palabras" class="oculto">
         <h2>Lista de Referencia</h2>
+         <p id="lista-info" class="estado-info"></p> <!-- Info sobre la lista mostrada -->
         <div id="contenido-lista">
             <!-- La lista completa se mostrará aquí -->
         </div>
     </div>
 
-    <!-- Cambiado: Añadida la carpeta 'js/' a las rutas -->
+    <!-- Asegúrate que las rutas a JS sean correctas (js/... si están en carpeta) -->
     <script src="js/palabras.js"></script>
     <script src="js/script.js"></script>
 </body>
