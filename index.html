@@ -29,9 +29,7 @@
             <label for="num-palabras-input"><strong>Número de palabras (<span id="num-palabras-valor">10</span>):</strong></label>
             <div class="config-slider-container">
                  <input type="range" id="num-palabras-slider" value="10" min="1" max="50" step="1">
-                 <!-- Puedes ajustar max si quieres más -->
                  <input type="number" id="num-palabras-input" value="10" min="1" max="50">
-                 <!-- Mantenemos el input numérico sincronizado -->
             </div>
         </div>
     </div>
@@ -47,18 +45,14 @@
     </div>
 
     <h2 id="modo-actual">Modo: Inglés -> Español</h2>
-    <div id="estado-generacion" class="estado-info"></div> <!-- Para mensajes de estado -->
+    <div id="estado-generacion" class="estado-info"></div>
 
-    <div id="area-juego">
-        <!-- Las palabras y campos de respuesta se generarán aquí con JavaScript -->
-    </div>
+    <div id="area-juego"></div>
 
     <div id="lista-palabras" class="oculto">
         <h2>Lista de Referencia</h2>
-         <p id="lista-info" class="estado-info"></p> <!-- Info sobre la lista mostrada -->
-        <div id="contenido-lista">
-            <!-- La lista completa se mostrará aquí -->
-        </div>
+         <p id="lista-info" class="estado-info"></p>
+        <div id="contenido-lista"></div>
     </div>
 
     <!-- Asegúrate que las rutas a JS sean correctas (js/... si están en carpeta) -->
